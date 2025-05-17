@@ -21,6 +21,6 @@ model Employee {
   department String
   title      String
   location   String
-  avatarUrl  String
+  avatarUrl  String?
   createdAt  DateTime @default(now())
 }

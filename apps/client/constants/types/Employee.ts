@@ -1,5 +1,4 @@
-export type Employee = {
-  id?: number;
+export type EmployeeDto = {
   firstName: string;
   lastName: string;
   email: string;
@@ -7,7 +6,18 @@ export type Employee = {
   title: TitleType;
   location: string;
   avatarUrl?: string;
-  createdAt?: Date;
+};
+
+export type Employee = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  department: DepartmentType;
+  title: TitleType;
+  location: string;
+  avatarUrl?: string;
+  createdAt?: string;
 };
 
 export enum DepartmentType {

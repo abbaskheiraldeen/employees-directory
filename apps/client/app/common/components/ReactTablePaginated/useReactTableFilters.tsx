@@ -1,9 +1,9 @@
-import { useQueryStrings } from "@/hooks/useQueryStrings";
 import type { InputItemDataType } from "rsuite/esm/InputPicker";
 import InputPicker from "rsuite/esm/InputPicker";
+import { useQueryStrings } from "@/hooks/utility-hooks/useQueryStrings";
 import DebouncedInput from "../Inputs/DebouncedInput";
 
-interface UseReacTableFiltersProps {
+interface UseReactTableFiltersProps {
   searchInput: {
     fieldName: string;
     placeholder?: string;
@@ -16,10 +16,10 @@ interface UseReacTableFiltersProps {
   }[];
 }
 
-export default function useReacTableFilters({
+export default function useReactTableFilters({
   searchInput,
   filters,
-}: UseReacTableFiltersProps) {
+}: UseReactTableFiltersProps) {
   const { prevQueries, appendQueries } = useQueryStrings();
 
   const searchInputValue = prevQueries[searchInput?.fieldName!] || "";
@@ -40,23 +40,35 @@ export default function useReacTableFilters({
         {searchInput?.fieldName && (
           <DebouncedInput
             value={searchInputValue}
-            onChange={(v) => appendQueries({ [searchInput?.fieldName!]: v })}
+            onChange={(v: any) =>
+              appendQueries({ [searchInput?.fieldName!]: v })
+            }
             placeholder={searchInput?.placeholder}
           />
         )}
+
         {filters?.map((filter) => (
-          <InputPicker
-            key={filter.fieldName}
-            placeholder={filter.placeholder}
-            data={filter.options}
-            value={
-              // in case the values are numbers, we should convert since they're coming from the query string
-              typeof filter.options[0]?.value === "number"
-                ? Number(prevQueries[filter.fieldName])
-                : prevQueries[filter.fieldName] || ""
-            }
-            onChange={(v) => appendQueries({ [filter.fieldName]: v })}
-          />
+          <div key={filter.fieldName} className="mb-4">
+            <label
+              htmlFor={filter.fieldName}
+              className="block mb-1 text-sm font-medium text-text-secondary"
+            >
+              {filter.placeholder}
+            </label>
+            <InputPicker
+              id={filter.fieldName}
+              placeholder={filter.placeholder}
+              data={filter.options}
+              cleanable
+              block
+              value={
+                typeof filter.options[0]?.value === "number"
+                  ? Number(prevQueries[filter.fieldName])
+                  : prevQueries[filter.fieldName] || ""
+              }
+              onChange={(v) => appendQueries({ [filter.fieldName]: v })}
+            />
+          </div>
         ))}
       </section>
     ),

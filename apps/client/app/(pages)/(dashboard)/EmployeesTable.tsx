@@ -7,14 +7,62 @@ import {
   useReactTablePagination,
 } from "@/app/common/components/ReactTablePaginated";
 import useGetEmployees from "@/hooks/api-hooks/employees/useGetEmployees";
-import { Employee } from "@/constants/types/Employee";
+import {
+  DepartmentType,
+  Employee,
+  TitleType,
+} from "@/constants/types/Employee";
 import DeleteItem from "@/app/common/components/DeleteComponent/DeleteItem";
-import { employeesApiEndpoint } from "@/constants/endpoints";
+import { endpoints } from "@/constants/endpoints";
 import { EditEmployeeButton } from "./components/Forms/EditEmployee";
+import useReactTableFilters from "@/app/common/components/ReactTablePaginated/useReactTableFilters";
 
 export default function EmployeesTable() {
+  const departmentOptions = [
+    { label: "All", value: "" },
+    ...Object.values(DepartmentType).map((dept) => ({
+      label: dept,
+      value: dept,
+    })),
+  ];
+
+  const titleOptions = [
+    { label: "All", value: "" },
+    ...Object.values(TitleType).map((title) => ({
+      label: title,
+      value: title,
+    })),
+  ];
+
   const { pagination, setPagination } = useReactTablePagination();
-  const { employees, isLoading, error } = useGetEmployees();
+  const { filters, searchInputValue, filtersValues } = useReactTableFilters({
+    searchInput: {
+      fieldName: "search",
+      placeholder: "Search by name or email",
+    },
+    filters: [
+      {
+        fieldName: "title",
+        placeholder: "Filter by title",
+        options: titleOptions,
+      },
+      {
+        fieldName: "department",
+        placeholder: "Filter by department",
+        options: departmentOptions,
+      },
+    ],
+  });
+
+  const { employees, isLoading, error, isFetching, total } = useGetEmployees({
+    params: {
+      pageIndex: pagination.pageIndex,
+      pageSize: pagination.pageSize,
+      search: searchInputValue,
+      department: filtersValues?.department,
+      title: filtersValues?.title,
+    },
+  });
 
   const columns: ColumnDef<Employee>[] = [
     {
@@ -83,7 +131,7 @@ export default function EmployeesTable() {
           <DeleteItem
             title="Delete Employee"
             caption={`Are you sure you want to delete "${row.original.firstName}"? This action cannot be undone.`}
-            endpoint={`${employeesApiEndpoint}?id=${row.original.id}`}
+            endpoint={endpoints.deleteEmployee(row.original.id!)}
             queryKeysToInvalidate={[["employees"]]}
             buttonChildren={<BsFillTrashFill size={18} color="red" />}
           />
@@ -93,14 +141,18 @@ export default function EmployeesTable() {
   ];
 
   return (
-    <ReactTablePaginated
-      columns={columns}
-      data={employees ?? []}
-      totalRows={employees?.length ?? 0}
-      loading={isLoading}
-      pagination={pagination}
-      setPagination={setPagination}
-      errorMessage={error?.message}
-    />
+    <>
+      {filters}
+      <ReactTablePaginated
+        columns={columns}
+        data={employees ?? []}
+        totalRows={total ?? 0}
+        loading={isLoading}
+        pagination={pagination}
+        paginating={isFetching}
+        setPagination={setPagination}
+        errorMessage={error?.message}
+      />
+    </>
   );
 }

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import CustomButton from "@/app/common/components/Buttons/CustomButton";
 import { FaPlus } from "react-icons/fa";

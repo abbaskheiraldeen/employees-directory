@@ -1,9 +1,10 @@
-import { employeesApiEndpoint } from "@/constants/endpoints";
+import { endpoints } from "@/constants/endpoints";
+import { EmployeeDto } from "@/constants/types/Employee";
 import { useUpdateData } from "@/hooks/api-service/useUpdateData";
 
 export default function useUpdateEmployee(id: number) {
-  return useUpdateData({
+  return useUpdateData<EmployeeDto>({
     queryKeysToInvalidate: [["employees"]],
-    endpoint: `${employeesApiEndpoint}?id=${id}`,
+    endpoint: endpoints.updateEmployee(id),
   });
 }

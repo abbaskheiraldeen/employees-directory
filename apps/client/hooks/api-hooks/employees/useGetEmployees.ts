@@ -1,16 +1,30 @@
 import { useReadData } from "@/hooks/api-service/useReadData";
-import { employeesApiEndpoint } from "@/constants/endpoints";
 import { Employee } from "@/constants/types/Employee";
+import { endpoints } from "@/constants/endpoints";
 
-export default function useGetEmployees() {
-  const { data, isLoading, isFetching, error } = useReadData<Employee[]>({
-    queryKey: ["employees"],
-    endpoint: `${employeesApiEndpoint}`,
+type Params = {
+  pageIndex?: number;
+  pageSize?: number;
+  search?: string;
+  department?: string;
+  title?: string;
+};
+
+export default function useGetEmployees({ params }: { params: Params }) {
+  const { data, isLoading, isFetching, error } = useReadData<{
+    data: Employee[];
+    total: number;
+  }>({
+    queryKey: ["employees", params],
+    endpoint: endpoints.getEmployees,
+    keepPreviousData: true,
+    params,
   });
 
   return {
-    employees: data,
+    employees: data?.data,
     isLoading,
+    total: data?.total,
     isFetching,
     error,
   };

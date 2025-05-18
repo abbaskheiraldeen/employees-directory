@@ -1,9 +1,10 @@
+import { endpoints } from "@/constants/endpoints";
+import { EmployeeDto } from "@/constants/types/Employee";
 import { usePostData } from "@/hooks/api-service/usePostData";
-import { employeesApiEndpoint } from "@/constants/endpoints";
 
 export default function usePostEmployee() {
-  return usePostData({
-    endpoint: `${employeesApiEndpoint}`,
+  return usePostData<EmployeeDto>({
+    endpoint: endpoints.createEmployee,
     queryKeysToInvalidate: [["employees"]],
   });
 }

@@ -28,15 +28,17 @@ export class EmployeeController {
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Body() updateEmployeeDto: UpdateEmployeeDto,
     @Param('id') id: number,
   ) {
-    return this.employeeService.update(updateEmployeeDto, id);
+    await this.employeeService.update(updateEmployeeDto, id);
+    return { message: 'Employee updated successfully' };
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.employeeService.delete(id);
+  async delete(@Param('id') id: number) {
+    await this.employeeService.delete(id);
+    return { message: 'Employee deleted successfully' };
   }
 }

@@ -1,3 +1,4 @@
+"use client";
 import { useQueryStrings } from "@/hooks/utility-hooks/useQueryStrings";
 import { type OnChangeFn, type PaginationState } from "@tanstack/react-table";
 import { useMemo } from "react";

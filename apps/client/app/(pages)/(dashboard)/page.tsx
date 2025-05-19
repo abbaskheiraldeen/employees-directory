@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { Suspense } from "react";
 import EmployeesTable from "./EmployeesTable";
 import { AddEmployeeButton } from "./components/Forms/AddEmployee";
 
@@ -11,8 +12,9 @@ export default function Page() {
         </h1>
         <AddEmployeeButton /> {/* This should show the button */}
       </div>
-
-      <EmployeesTable />
+      <Suspense fallback={<div>Loading...</div>}>
+        <EmployeesTable />
+      </Suspense>
     </div>
   );
 }

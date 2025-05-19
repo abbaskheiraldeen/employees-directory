@@ -25,7 +25,7 @@ export default function useMyReactTable<DataType>({
   return useReactTable({
     data,
     columns,
-    pageCount: Math.ceil(totalRows / pagination?.pageSize!) ?? -1,
+    pageCount: Math.ceil(totalRows / (pagination?.pageSize ?? 1)),
     state: {
       pagination,
     },

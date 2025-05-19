@@ -1,3 +1,4 @@
+"use client";
 import type { InputItemDataType } from "rsuite/esm/InputPicker";
 import InputPicker from "rsuite/esm/InputPicker";
 import { useQueryStrings } from "@/hooks/utility-hooks/useQueryStrings";
@@ -22,7 +23,7 @@ export default function useReactTableFilters({
 }: UseReactTableFiltersProps) {
   const { prevQueries, appendQueries } = useQueryStrings();
 
-  const searchInputValue = prevQueries[searchInput?.fieldName!] || "";
+  const searchInputValue = prevQueries[searchInput.fieldName] || "";
   const filtersValues = filters?.reduce(
     (acc, filter) => {
       acc[filter.fieldName] = prevQueries[filter.fieldName];
@@ -37,13 +38,11 @@ export default function useReactTableFilters({
 
     filters: (
       <section className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 mb-2">
-        {searchInput?.fieldName && (
+        {searchInput.fieldName && (
           <DebouncedInput
             value={searchInputValue}
-            onChange={(v: any) =>
-              appendQueries({ [searchInput?.fieldName!]: v })
-            }
-            placeholder={searchInput?.placeholder}
+            onChange={(v: any) => appendQueries({ [searchInput.fieldName]: v })}
+            placeholder={searchInput.placeholder}
           />
         )}
 

@@ -1,4 +1,3 @@
-import { cn } from "@/utils/cn";
 import { useEffect } from "react";
 import {
   BsChevronDoubleRight,
@@ -25,21 +24,20 @@ export default function Pagination({
     if (!paginating && doesCurrentPagePassedLastPage) {
       table.setPageIndex(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doesCurrentPagePassedLastPage]);
+  }, [doesCurrentPagePassedLastPage, paginating, table]);
 
   return (
-    <div className="flex justify-between items-center p-3.5">
-      <p className="text-xs text-gray-500">{totalRows} row(s)</p>
+    <div className="flex justify-between items-center p-4 border-t border-gray-200 bg-white rounded-b-md">
+      <p className="text-xs text-gray-500 select-none">{totalRows} row(s)</p>
 
-      {!hidePagination ? (
-        <div className="flex items-center space-x-6">
+      {!hidePagination && (
+        <div className="flex items-center space-x-5">
           {paginating && (
             <svg
-              width="23"
-              height="23"
+              width="20"
+              height="20"
               fill="currentColor"
-              className="animate-spin"
+              className="animate-spin text-gray-500"
               viewBox="0 0 1792 1792"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -48,11 +46,12 @@ export default function Pagination({
           )}
 
           <select
-            className="rounded border border-gray-200 bg-transparent py-1 text-sm text-black focus:border-gray-200"
+            className="rounded-md border border-gray-300 bg-white py-1.5 px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={table.getState().pagination.pageSize}
             onChange={(e) => {
               table.setPageSize(Number(e.target.value));
             }}
+            aria-label="Select page size"
           >
             {[5, 10, 15, 20, 25, 30].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
@@ -61,7 +60,7 @@ export default function Pagination({
             ))}
           </select>
 
-          <strong className="text-xs">
+          <strong className="text-xs text-gray-700 select-none">
             Page{" "}
             <span>
               {table.getState().pagination.pageIndex + 1} of{" "}
@@ -69,59 +68,41 @@ export default function Pagination({
             </span>
           </strong>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <button
-              className="rounded border p-1 disabled:bg-opacity-80 hover:bg-gray-100"
+              className="rounded-md border border-gray-300 p-1 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
+              aria-label="Go to first page"
             >
-              <BsChevronDoubleLeft
-                size={15}
-                className={cn(
-                  !table.getCanPreviousPage() ? "text-gray-300" : "text-black"
-                )}
-              />
+              <BsChevronDoubleLeft size={18} />
             </button>
             <button
-              className="rounded border p-1 disabled:bg-opacity-80 hover:bg-gray-100"
+              className="rounded-md border border-gray-300 p-1 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              aria-label="Go to previous page"
             >
-              <BsChevronLeft
-                size={15}
-                className={cn(
-                  !table.getCanPreviousPage() ? "text-gray-300" : "text-black"
-                )}
-              />
+              <BsChevronLeft size={18} />
             </button>
             <button
-              className="rounded border p-1 disabled:bg-opacity-80 hover:bg-gray-100"
+              className="rounded-md border border-gray-300 p-1 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              aria-label="Go to next page"
             >
-              <BsChevronRight
-                size={15}
-                className={cn(
-                  !table.getCanNextPage() ? "text-gray-300" : "text-black"
-                )}
-              />
+              <BsChevronRight size={18} />
             </button>
             <button
-              className="rounded border p-1 disabled:bg-opacity-80 hover:bg-gray-100"
+              className="rounded-md border border-gray-300 p-1 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
+              aria-label="Go to last page"
             >
-              <BsChevronDoubleRight
-                size={15}
-                className={cn(
-                  !table.getCanNextPage() ? "text-gray-300" : "text-black"
-                )}
-              />
+              <BsChevronDoubleRight size={18} />
             </button>
           </div>
         </div>
-      ) : (
-        <div></div>
       )}
     </div>
   );

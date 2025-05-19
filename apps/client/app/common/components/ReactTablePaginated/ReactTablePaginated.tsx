@@ -44,7 +44,7 @@ export default function ReactTablePaginated<DataType>({
   return (
     <>
       <TableStyle>
-        <table className="min-w-full">
+        <table className="min-w-full border-collapse table-fixed text-gray-800">
           <TableHead table={table} />
           {loading ? (
             <>
@@ -60,11 +60,12 @@ export default function ReactTablePaginated<DataType>({
             <TableBody table={table} />
           )}
         </table>
+
         {!loading && !paginating && data?.length === 0 && (
-          <div className="flex items-center py-5 justify-center">
-            <div className="text-center">
-              <div className="text-gray-500 text-sm">No results found</div>
-            </div>
+          <div className="flex items-center py-8 justify-center bg-gray-50 rounded-md mt-4 border border-gray-200">
+            <p className="text-gray-500 text-lg font-semibold select-none">
+              No results found
+            </p>
           </div>
         )}
 
@@ -83,14 +84,8 @@ export default function ReactTablePaginated<DataType>({
 
 function ErrorAlert({ errorMessage }: { errorMessage: string }) {
   return (
-    <div className="w-fit">
-      <div className="bg-red-50 p-4 rounded-lg">
-        <div className="flex items-center justify-between">
-          <div className="text-red-800 text-sm font-medium">
-            <span className="text-red-500">{errorMessage}</span>
-          </div>
-        </div>
-      </div>
+    <div className="max-w-md mx-auto my-4 rounded-md border border-red-300 bg-red-50 p-4 shadow-sm">
+      <p className="text-red-700 font-semibold text-center">{errorMessage}</p>
     </div>
   );
 }
@@ -98,18 +93,14 @@ function ErrorAlert({ errorMessage }: { errorMessage: string }) {
 export function SkeletonLoader({ columnsLength }: { columnsLength: number }) {
   return (
     <tbody className="bg-white">
-      <tr className="border-b even:bg-gray-50">
+      <tr className="border-b even:bg-gray-50 hover:bg-gray-100 transition-colors duration-150">
         {Array.from({ length: columnsLength }).map((_, index) => (
           <td
             key={index}
-            className="whitespace-nowrap p-2 text-start text-sm font-medium text-gray-900"
+            className="whitespace-nowrap px-4 py-3 text-start text-sm font-medium"
           >
-            <div className="animate-pulse min-w-full">
-              <div className="flex-1 p-2">
-                <div className="space-y-3 w-1/2">
-                  <div className="h-3 bg-gray-200 rounded"></div>
-                </div>
-              </div>
+            <div className="animate-pulse w-full">
+              <div className="h-4 bg-gray-300 rounded-md max-w-[70%] mx-auto" />
             </div>
           </td>
         ))}

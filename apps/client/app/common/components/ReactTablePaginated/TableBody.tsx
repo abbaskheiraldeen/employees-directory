@@ -7,7 +7,7 @@ export default function TableBody({ table }: { table: any }) {
       {table.getRowModel().rows.map((row: any) => (
         <tr
           key={row.id}
-          className="border-b hover:bg-gray-100 transition-all duration-200 ease-linear"
+          className="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200 ease-in-out cursor-pointer"
         >
           {row.getVisibleCells().map((cell: any) => {
             const cellValue = cell.getValue();
@@ -15,13 +15,13 @@ export default function TableBody({ table }: { table: any }) {
               <td
                 key={cell.id}
                 className={cn(
-                  "whitespace-nowrap p-2 text-start text-sm font-medium text-gray-900"
+                  "whitespace-nowrap px-5 py-4 text-start text-sm font-normal text-gray-800 border-r last:border-r-0"
                 )}
               >
                 {cellValue !== null ? (
                   flexRender(cell.column.columnDef.cell, cell.getContext())
                 ) : (
-                  <span className="text-gray-300"> N/A</span>
+                  <span className="text-gray-400 italic select-none">N/A</span>
                 )}
               </td>
             );

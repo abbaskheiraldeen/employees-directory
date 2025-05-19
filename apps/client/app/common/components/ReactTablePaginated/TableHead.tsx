@@ -2,26 +2,24 @@ import { flexRender } from "@tanstack/react-table";
 
 export default function TableHead({ table }: { table: any }) {
   return (
-    <thead className="pl-3 hover:bg-gray-100 transition-all duration-200 ease-linear">
-      {table.getHeaderGroups().map((headerGroup: any) => {
-        return (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header: any) => (
-              <th
-                key={header.id}
-                className="capitalize tracking-wider whitespace-nowrap p-2 text-left text-sm text-black border-b"
-              >
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </th>
-            ))}
-          </tr>
-        );
-      })}
+    <thead className="bg-gray-100  top-0 z-10">
+      {table.getHeaderGroups().map((headerGroup: any) => (
+        <tr key={headerGroup.id} className="border-b border-gray-300">
+          {headerGroup.headers.map((header: any) => (
+            <th
+              key={header.id}
+              className="capitalize tracking-wide whitespace-nowrap px-5 py-3 text-left text-xs font-semibold text-gray-700 select-none"
+            >
+              {header.isPlaceholder
+                ? null
+                : flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+            </th>
+          ))}
+        </tr>
+      ))}
     </thead>
   );
 }

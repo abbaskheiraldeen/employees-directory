@@ -5,7 +5,6 @@ export type EmployeeDto = {
   department: DepartmentType;
   title: TitleType;
   location: string;
-  avatarUrl?: string;
 };
 
 export type Employee = {
@@ -16,7 +15,6 @@ export type Employee = {
   department: DepartmentType;
   title: TitleType;
   location: string;
-  avatarUrl?: string;
   createdAt?: string;
 };
 

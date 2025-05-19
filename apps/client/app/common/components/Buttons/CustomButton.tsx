@@ -30,14 +30,14 @@ const CustomButton = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const variants = {
       primary:
-        "bg-primary hover:bg-primary-hover text-white border-transparent",
+        "bg-purple-500 hover:bg-purple-500-hover text-white border-transparent",
       secondary:
-        "bg-secondary hover:bg-secondary-hover text-text-primary border-transparent",
+        "bg-blue-500 hover:bg-purple-300 text-white border-transparent",
       outline:
-        "bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white",
+        "bg-transparent border-2 border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white",
       ghost:
-        "bg-transparent hover:bg-background-secondary text-text-primary border-transparent",
-      danger: "bg-danger hover:bg-danger-hover text-white border-transparent",
+        "bg-transparent hover:bg-background-secondary text-purple-500 border-transparent",
+      danger: "bg-red-500 hover:bg-red-300 text-white border-transparent",
     };
 
     const sizes = {

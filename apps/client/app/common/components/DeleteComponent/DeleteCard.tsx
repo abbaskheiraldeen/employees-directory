@@ -28,8 +28,10 @@ export default function DeleteCard({
     >
       <section className="flex items-center justify-between pb-0">
         <Modal.Title className="flex items-center gap-2 text-lg font-semibold">
-          <BsFillTrashFill className="h-5 w-5 text-status-error" />
-          {title}
+          <div className="flex flex-row items-center gap-2">
+            <BsFillTrashFill className="h-6 w-6 text-red-500" />
+            {title}
+          </div>
         </Modal.Title>
         <CustomButton
           variant="outline"
@@ -42,12 +44,12 @@ export default function DeleteCard({
 
       <Modal.Body className="px-6 py-4">
         <div className="flex flex-col items-center justify-center space-y-4">
-          <BsFillTrashFill size={45} className="text-status-error" />
-          <p className="text-center text-text-secondary">{caption}</p>
+          <BsFillTrashFill size={45} className="text-red-500" />
+          <p className="text-center text-red-500">{caption}</p>
 
           <div className="flex items-center justify-center gap-3 pt-4 w-full">
             <CustomButton
-              variant="outline"
+              variant="secondary"
               onClick={handleCancel}
               disabled={isLoading}
             >

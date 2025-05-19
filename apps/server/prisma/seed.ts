@@ -22,7 +22,6 @@ async function main() {
     department: getRandomDepartment(),
     title: getRandomTitle(),
     location: `${user.location.city}, ${user.location.state}`,
-    avatarUrl: user.picture.large,
   }));
 
   await prisma.employee.createMany({

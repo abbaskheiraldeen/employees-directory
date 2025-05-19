@@ -1,14 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  isString,
-  IsString,
-  IsUrl,
-  Max,
-} from 'class-validator';
+import { IsOptional, IsString, Max } from 'class-validator';
 
 export class GetEmployeeDto {
   @ApiProperty({ required: false })

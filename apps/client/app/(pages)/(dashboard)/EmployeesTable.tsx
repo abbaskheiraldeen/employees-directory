@@ -19,7 +19,6 @@ import useReactTableFilters from "@/app/common/components/ReactTablePaginated/us
 
 export default function EmployeesTable() {
   const departmentOptions = [
-    { label: "All", value: "" },
     ...Object.values(DepartmentType).map((dept) => ({
       label: dept,
       value: dept,
@@ -27,7 +26,6 @@ export default function EmployeesTable() {
   ];
 
   const titleOptions = [
-    { label: "All", value: "" },
     ...Object.values(TitleType).map((title) => ({
       label: title,
       value: title,

@@ -3,8 +3,7 @@ import { Modal } from "rsuite";
 import React from "react";
 import { Formik, Form } from "formik";
 import { BiUser } from "react-icons/bi";
-import { MdEmail } from "react-icons/md";
-import { MdLocationOn } from "react-icons/md";
+import { MdEmail, MdLocationOn } from "react-icons/md";
 import * as yup from "yup";
 
 import InputField from "@/app/common/components/FormFields/InputField";
@@ -14,6 +13,7 @@ import CustomButton from "@/app/common/components/Buttons/CustomButton";
 import {
   DepartmentType,
   Employee,
+  EmployeeDto,
   TitleType,
 } from "@/constants/types/Employee";
 import SelectField from "@/app/common/components/FormFields/SelectField";
@@ -28,15 +28,15 @@ interface EmployeeFormModalProps {
 }
 
 const employeeValidationSchema = yup.object({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
+  firstName: yup.string().trim().required("First name is required"),
+  lastName: yup.string().trim().required("Last name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   department: yup.string().required("Department is required"),
   title: yup.string().required("Title is required"),
-  location: yup.string().required("Location is required"),
+  location: yup.string().trim().required("Location is required"),
 });
 
-interface FormValues extends Employee {}
+interface FormValues extends EmployeeDto {}
 
 export const EmployeeFormModal = ({
   mode,
@@ -53,44 +53,12 @@ export const EmployeeFormModal = ({
     department: employee?.department ?? DepartmentType.Development,
     title: employee?.title ?? TitleType.Engineer,
     location: employee?.location ?? "",
-    avatarUrl: employee?.avatarUrl ?? "",
   };
 
   const handleSubmit = (values: FormValues) => {
-    if (mode === "edit" && employee?.id) {
-      // For edit, we need to include the id in the values
-      const updatePayload: Employee = {
-        id: employee.id,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        department: values.department,
-        title: values.title,
-        location: values.location,
-        avatarUrl: values.avatarUrl,
-      };
-      mutation.mutate(updatePayload, {
-        onSuccess: () => {
-          onClose();
-        },
-      });
-    } else {
-      const createPayload: Employee = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        department: values.department,
-        title: values.title,
-        location: values.location,
-        avatarUrl: values.avatarUrl,
-      };
-
-      mutation.mutate(createPayload, {
-        onSuccess: () => {
-          onClose();
-        },
-      });
-    }
+    mutation.mutate(values, {
+      onSuccess: onClose,
+    });
   };
 
   return (
@@ -100,21 +68,30 @@ export const EmployeeFormModal = ({
       <Modal
         open={isOpen}
         onClose={onClose}
-        size="sm"
+        size="md"
         closeButton={false}
-        className="overflow-hidden"
+        className="overflow-hidden rounded-lg shadow-lg"
       >
-        <section className="flex items-center justify-between">
-          <Modal.Title className="flex items-center gap-2 text-lg font-semibold">
-            <BiUser className="h-5 w-5 text-primary" />
-            {mode === "edit" ? "Edit Employee" : "Add New Employee"}
+        <section className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <Modal.Title className="flex flex-row items-center gap-2 text-lg font-semibold text-gray-900">
+            <div className="flex flex-row items-center gap-2">
+              <BiUser className="h-6 w-6 text-blue-600" />
+              {mode === "edit" ? "Edit Employee" : "Add New Employee"}
+            </div>
           </Modal.Title>
-          <CustomButton variant="outline" size="sm" onClick={onClose}>
+
+          <CustomButton
+            variant="outline"
+            size="sm"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="text-gray-500 hover:text-gray-700 transition"
+          >
             ✕
           </CustomButton>
         </section>
 
-        <Modal.Body>
+        <Modal.Body className="px-6 py-6">
           <Formik
             initialValues={initialValues}
             validationSchema={employeeValidationSchema}
@@ -123,7 +100,7 @@ export const EmployeeFormModal = ({
           >
             {({ isValid, dirty }) => (
               <Form className="space-y-6">
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <InputField
                     label="First Name"
                     name="firstName"
@@ -169,7 +146,6 @@ export const EmployeeFormModal = ({
                     disabled={false}
                     noResultsMessage="No employee types found"
                   />
-
                   <InputField
                     label="Location"
                     name="location"
@@ -179,8 +155,12 @@ export const EmployeeFormModal = ({
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t">
-                  <CustomButton variant="danger" onClick={onClose}>
+                <div className="flex justify-end gap-4 pt-6 border-t border-gray-200">
+                  <CustomButton
+                    variant="ghost"
+                    onClick={onClose}
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
                     Cancel
                   </CustomButton>
                   <CustomButton
@@ -188,6 +168,7 @@ export const EmployeeFormModal = ({
                     type="submit"
                     isLoading={mutation.isPending}
                     disabled={mutation.isPending || !isValid || !dirty}
+                    className="min-w-[120px]"
                   >
                     {mode === "edit" ? "Update Employee" : "Add Employee"}
                   </CustomButton>
